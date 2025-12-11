@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Local Ukrainian Gen-AI Community</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ua-blue: #0057b7;
+      --ua-yellow: #ffd700;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border-subtle: #e2e8f0;
+      --radius-xl: 18px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #ffffff 0, #f8fafc 36%, #eef2ff 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 1120px;
+      background: #ffffff;
+      border-radius: 26px;
+      box-shadow: var(--shadow-soft);
+      padding: 24px 32px 32px;
+    }
+
+    @media (max-width: 768px) {
+      .app-shell {
+        padding: 18px 18px 24px;
+        border-radius: 20px;
+      }
+    }
+
+    /* NAVBAR */
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .flag {
+      width: 28px;
+      height: 18px;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06);
+    }
+
+    .flag div:nth-child(1) {
+      background: var(--ua-blue);
+      height: 50%;
+    }
+
+    .flag div:nth-child(2) {
+      background: var(--ua-yellow);
+      height: 50%;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .nav-link {
+      cursor: pointer;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--ua-blue);
+      border-radius: 999px;
+      transition: width 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    .nav-link--active {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .nav-link--active::after {
+      width: 18px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.18s ease, color 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      box-shadow: inset 0 0 0 1px var(--border-subtle);
+    }
+
+    .btn-outline:hover {
+      background: #f8fafc;
+      transform: translateY(-0.5px);
+    }
+
+    .btn-primary {
+      background: var(--ua-yellow);
+      color: #111827;
+      box-shadow: 0 12px 25px rgba(250, 204, 21, 0.45);
+    }
+
+    .btn-primary:hover {
+      background: #ffce1c;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(250, 204, 21, 0.55);
+    }
+
+    .btn-icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* HERO */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px 4px 4px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.06);
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      width: fit-content;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .hero-pill-badge {
+      background: linear-gradient(135deg, var(--ua-blue), #1d4ed8);
+      color: #f9fafb;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .hero-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
+    }
+
+    .hero-right {
+      justify-self: center;
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top left, #eff6ff 0, #ffffff 50%, #eef2ff 100%);
+      border-radius: 26px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      max-width: 360px;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .hero-stat {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .hero-stat span {
+      color: var(--ua-blue);
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .hero-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.04);
+      color: var(--text-muted);
+    }
+
+    .hero-shapes {
+      position: absolute;
+      right: -28px;
+      bottom: -30px;
+      width: 170px;
+      height: 170px;
+      opacity: 0.94;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-right {
+        order: -1;
+        justify-self: flex-start;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .hero-card {
+        max-width: 100%;
+      }
+    }
+
+    /* SECTIONS */
+
+    .sections {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 24px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .sections {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .section {
+      border-radius: var(--radius-xl);
+      background: var(--bg);
+      padding: 18px 18px 16px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .section-title span {
+      color: var(--ua-yellow);
+    }
+
+    .section-title--blue span {
+      color: var(--ua-blue);
+    }
+
+    .section-link {
+      font-size: 12px;
+      color: var(--ua-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .section-link:hover {
+      text-decoration: underline;
+    }
+
+    .card-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .event-card,
+    .blog-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 12px 13px 11px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .event-title,
+    .blog-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .event-meta,
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .pill-small {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.06);
+      color: #1d4ed8;
+      font-weight: 500;
+    }
+
+    .card-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .card-footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ua-blue);
+      text-decoration: none;
+    }
+
+    .card-footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .dot-muted {
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: #cbd5f5;
+    }
+
+    /* SMALL FOOTNOTE */
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.12);
+      color: #166534;
+      font-weight: 500;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="nav-left">
+        <div class="flag" aria-hidden="true">
+          <div></div>
+          <div></div>
+        </div>
+        <span class="brand-name">Local Ukrainian Gen-AI Community</span>
+        <nav class="nav-links" aria-label="Main navigation">
+          <span class="nav-link nav-link--active">Home</span>
+          <span class="nav-link">About</span>
+          <span class="nav-link">Events</span>
+          <span class="nav-link">Blog</span>
+        </nav>
+      </div>
+
+      <div class="nav-right">
+        <button class="btn btn-outline" type="button">
+          <span class="btn-icon">🌐</span>
+          <span>UA / EN</span>
+        </button>
+        <button class="btn btn-primary" type="button">
+          <span>Sign&nbsp;Up</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-pill">
+          <span class="hero-pill-badge">New</span>
+          <span>AI meetups &amp; study jams across Ukraine</span>
+        </div>
+
+        <h1 class="hero-title">
+          Local Ukrainian<br />
+          Gen-AI Community
+        </h1>
+
+        <p class="hero-subtitle">
+          Connecting AI enthusiasts, builders, and researchers to share projects, organize events,
+          and grow the Ukrainian Gen-AI ecosystem together.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button">
+            <span>Learn More</span>
+          </button>
+          <button class="btn btn-outline" type="button">
+            <span class="btn-icon">➤</span>
+            <span>Join next meetup</span>
+          </button>
+        </div>
+
+        <div class="hero-meta">
+          <span class="hero-dot"></span>
+          <span>Over 500+ members in Kyiv, Lviv, Kharkiv &amp; online</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <aside class="hero-card" aria-label="Community stats">
+          <div class="hero-tag">Community snapshot · 2025</div>
+          <div class="hero-stat">
+            <span>12</span> upcoming events
+          </div>
+          <div class="hero-badges">
+            <span class="hero-badge">Hands-on workshops</span>
+            <span class="hero-badge">Study groups</span>
+            <span class="hero-badge">Mentoring</span>
+          </div>
+          <div class="card-text" style="font-size:12px; max-width: 180px;">
+            From prompt-engineering sessions to hackathons, we run regular offline and online events.
+          </div>
+
+          <!-- abstract Ukrainian-colored shapes -->
+          <svg class="hero-shapes" viewBox="0 0 160 160" aria-hidden="true">
+            <!-- blue quarter circles -->
+            <path d="M80 0h80v80H80z" fill="#0057b7" />
+            <circle cx="80" cy="80" r="40" fill="#ffd700" />
+            <path d="M80 80h80v80H80z" fill="#0057b7" />
+            <rect x="0" y="100" width="40" height="40" rx="8" fill="#0057b7" />
+          </svg>
+        </aside>
+      </div>
+    </section>
+
+    <!-- LOWER SECTIONS -->
+    <section class="sections" aria-label="Highlights">
+      <!-- Upcoming events -->
+      <section class="section" aria-label="Upcoming events">
+        <div class="section-header">
+          <h2 class="section-title"><span>Upcoming</span> events</h2>
+          <a href="#" class="section-link">View all events</a>
+        </div>
+
+        <div class="card-list">
+          <article class="event-card">
+            <h3 class="event-title">AI Meetup · Kyiv</h3>
+            <div class="event-meta">
+              <span>15 May 2025</span>
+              <span class="dot-muted"></span>
+              <span>offline · campus hub</span>
+              <span class="pill-small">Gen-AI demos</span>
+            </div>
+            <p class="card-text">
+              Lightning talks, live demos of local Gen-AI projects, and networking with builders from the ecosystem.
+            </p>
+          </article>
+
+          <article class="event-card">
+            <h3 class="event-title">Hands-on Workshop: RAG Systems</h3>
+            <div class="event-meta">
+              <span>22 May 2025</span>
+              <span class="dot-muted"></span>
+              <span>online · Zoom</span>
+            </div>
+            <p class="card-text">
+              Build a retrieval-augmented generation pipeline in small groups with guidance from mentors.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Blog / updates -->
+      <section class="section" aria-label="From the blog">
+        <div class="section-header">
+          <h2 class="section-title section-title--blue"><span>From</span> the blog</h2>
+          <a href="#" class="section-link">View all posts</a>
+        </div>
+
+        <div class="card-list">
+          <article class="blog-card">
+            <h3 class="blog-title">Exploring Ukrainian-language LLMs</h3>
+            <div class="blog-meta">
+              <span>10 April 2025</span>
+              <span class="dot-muted"></span>
+              <span>5 min read</span>
+            </div>
+            <p class="card-text">
+              Overview of open-source models, datasets, and tools for building Gen-AI experiences in Ukrainian.
+            </p>
+            <a href="#" class="card-footer-link">
+              <span>Read article</span>
+              <span>↗</span>
+            </a>
+          </article>
+
+          <article class="blog-card">
+            <h3 class="blog-title">How to host your first AI meetup</h3>
+            <div class="blog-meta">
+              <span>28 March 2025</span>
+              <span class="dot-muted"></span>
+              <span>7 min read</span>
+            </div>
+            <p class="card-text">
+              Practical tips, templates, and checklists for organizing community-driven AI events in your city.
+            </p>
+            <a href="#" class="card-footer-link">
+              <span>View guide</span>
+              <span>↗</span>
+            </a>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <div class="footer-note">
+      <span class="footer-pill">Community-led</span>
+      <span>Built by volunteers for the Ukrainian Gen-AI community.</span>
+    </div>
+  </div>
+</body>
+</html>
